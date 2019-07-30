@@ -25,8 +25,8 @@ class _MyAppState extends State<MyApp> {
     String platformVersion;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      platformVersion = await Adcolony.platformVersion;
-    } on PlatformException {
+      await Adcolony.initialize(appid: 'fgdg', zoneid: ['sfasfjif']);
+    } on Exception {
       platformVersion = 'Failed to get platform version.';
     }
 
