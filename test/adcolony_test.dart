@@ -15,7 +15,7 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
-  test('initialize', () async {
-    expect(await Adcolony.initialize(appid: 'fgdg', zoneid: ['sgsgds']), 'true');
+  test('getPlatformVersion', () async {
+    expect(await Adcolony.platformVersion, '42');
   });
 }
