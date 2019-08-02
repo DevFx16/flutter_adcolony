@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.3.0'
     }
 }
 
@@ -16,6 +16,9 @@ rootProject.allprojects {
     repositories {
         google()
         jcenter()
+        maven {
+            url  "https://adcolony.bintray.com/AdColony"      
+        }
     }
 }
 
@@ -26,9 +29,18 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     lintOptions {
         disable 'InvalidPackage'
     }
+}
+
+dependencies {
+    /** 
+     * Any other dependencies your module has are placed in this dependency configuration
+     */
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'com.adcolony:sdk:3.3.11'
+    implementation 'com.google.android.gms:play-services-ads-identifier:16.0.0'
 }
