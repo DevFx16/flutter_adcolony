@@ -1,16 +1,53 @@
-# adcolony_example
+# Flutter AdColony
 
-Demonstrates how to use the adcolony plugin.
+**Note: Currently only Android platform is supported.**
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### 1. Initialization
 
-A few resources to get you started if this is your first Flutter project:
+Call `Adcolony.initialize();` during app initialization.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+```dart
+Adcolony.initialize(appid: 'your_app_id', zoneid: ['your_zones_ids']);
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 2. Request Interstitial Ad and Rewarded Video Ad
+
+```dart
+Adcolony.requestInterstitial(zoneid: 'your_zone_interstitial_id');
+```
+### 3. Show Ad
+
+```dart
+Adcolony.onRequestFilled = () {
+    Adcolony.showAd();
+};
+```
+
+### 4. ProGuard Configuration
+
+```
+# For communication with AdColony's WebView
+-keepclassmembers class * { 
+    @android.webkit.JavascriptInterface <methods>; 
+}
+```
+```
+# For removing warnings due to lack of Multi-Window support
+-dontwarn android.app.Activity
+```
+
+## Events
+
+| Event              | Description                                                                        |
+|--------------------|------------------------------------------------------------------------------------|
+| OnRequestFilled    | Called in response to an ad request when the request has been successfully filled. |
+| OnRequestNotFilled | Called in response to an ad request when the request failed to fill.               |
+| OnOpened           | Called when the interstitial ad opens.                                             |
+| OnExpiring         | Called when an intersitial expires and is no longer valid for playback.            |
+| OnReward           | called when the rewarded video ends successfully.                                  |
+
+
+## Future Work
+Implement for iOS platform.
