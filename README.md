@@ -20,9 +20,22 @@ Adcolony.requestInterstitial(zoneid: 'your_zone_interstitial_id');
 ### 3. Show Ad
 
 ```dart
-    Adcolony.onRequestFilled = () {
-      Adcolony.showAd();
-    };
+Adcolony.onRequestFilled = () {
+    Adcolony.showAd();
+};
+```
+
+### 4. ProGuard Configuration
+
+```
+# For communication with AdColony's WebView
+-keepclassmembers class * { 
+    @android.webkit.JavascriptInterface <methods>; 
+}
+```
+```
+# For removing warnings due to lack of Multi-Window support
+-dontwarn android.app.Activity
 ```
 
 ## Events
