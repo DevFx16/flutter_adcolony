@@ -2,6 +2,8 @@
 
 **Note: Currently only Android platform is supported.**
 
+**Note: AndroidX is required.**
+
 ## Getting Started
 
 ### 1. Initialization
@@ -46,7 +48,7 @@ Adcolony.onRequestFilled = () {
 | OnRequestNotFilled | Called in response to an ad request when the request failed to fill.               |
 | OnOpened           | Called when the interstitial ad opens.                                             |
 | OnExpiring         | Called when an intersitial expires and is no longer valid for playback.            |
-| OnReward           | called when the rewarded video ends successfully.                                  |
+| OnReward           | Called when the rewarded video ends successfully.                                  |
 
 
 ## Future Work
