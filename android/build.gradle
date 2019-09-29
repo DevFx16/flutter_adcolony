@@ -17,7 +17,7 @@ rootProject.allprojects {
         google()
         jcenter()
         maven {
-            url  "https://adcolony.bintray.com/AdColony"      
+            url  "https://adcolony.bintray.com/AdColony"
         }
     }
 }
@@ -41,6 +41,6 @@ dependencies {
      * Any other dependencies your module has are placed in this dependency configuration
      */
     implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'com.adcolony:sdk:3.3.11'
+    implementation 'com.adcolony:sdk:4.1.0'
     implementation 'com.google.android.gms:play-services-ads-identifier:16.0.0'
 }
