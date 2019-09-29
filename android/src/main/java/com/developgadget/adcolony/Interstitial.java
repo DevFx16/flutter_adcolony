@@ -42,7 +42,7 @@ class Interstitial extends AdColonyInterstitialListener implements AdColonyRewar
     public void onRequestFilled(AdColonyInterstitial adColonyInterstitial) {
         this.Ad = adColonyInterstitial;
         this.channel.invokeMethod("onRequestFilled", null);
-        Log.e("AdColony", "onRequestFilled");
+        Log.d("AdColony", "onRequestFilled");
     }
 
     @Override

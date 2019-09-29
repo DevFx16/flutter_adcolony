@@ -1,5 +1,4 @@
 package com.developgadget.adcolony;
-import android.util.Log;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -18,6 +17,7 @@ public class AdcolonyPlugin implements MethodCallHandler {
   public static void registerWith(Registrar registrar) {
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "AdColony");
     channel.setMethodCallHandler(new AdcolonyPlugin(registrar, channel));
+    registrar.platformViewRegistry().registerViewFactory("/BannerAd", new BannerFactory());
   }
 
     private AdcolonyPlugin(Registrar registrar, MethodChannel channel) {

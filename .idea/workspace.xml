@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="29196336-650b-41ab-be7a-998205b75ecc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/android/src/main/java/com/developgadget/adcolony/Interstitial.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/developgadget/adcolony/AdcolonyPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/developgadget/adcolony/AdcolonyPlugin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
@@ -27,14 +20,13 @@
     <option name="testRunner" value="GRADLE" />
     <option name="delegatedBuild" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="ZY32375SJX" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/android/src/main/java/com/developgadget/adcolony/AdcolonyPlugin.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="21">
-              <caret line="22" column="48" selection-start-line="22" selection-start-column="48" selection-end-line="22" selection-end-column="48" />
+            <state relative-caret-position="84">
+              <caret line="11" column="54" selection-start-line="11" selection-start-column="54" selection-end-line="11" selection-end-column="54" />
               <folding>
                 <element signature="docComment;class#AdcolonyPlugin#0" />
                 <element signature="docComment;method#registerWith#0;class#AdcolonyPlugin#0" />
@@ -73,10 +65,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="170" />
-    <option name="y" value="91" />
-    <option name="width" value="1026" />
-    <option name="height" value="550" />
+    <option name="x" value="1364" />
+    <option name="width" value="1364" />
+    <option name="height" value="770" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -89,11 +80,6 @@
             <path>
               <item name="flutter_adcolony" type="b2602c69:ProjectViewProjectNode" />
               <item name="flutter_adcolony" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="flutter_adcolony" type="b2602c69:ProjectViewProjectNode" />
-              <item name="flutter_adcolony" type="462c0819:PsiDirectoryNode" />
-              <item name="android" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -253,9 +239,9 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-2" y="0" width="1370" height="734" extended-state="6" />
+    <frame x="1364" y="0" width="1364" height="770" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2670713" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2804878" />
       <window_info id="Captures" order="1" side_tool="true" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
@@ -338,8 +324,8 @@
     <entry file="file://$PROJECT_DIR$/android/src/main/java/com/developgadget/adcolony/AdColonyInterstitial.java" />
     <entry file="file://$PROJECT_DIR$/android/src/main/java/com/developgadget/adcolony/AdcolonyPlugin.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="22" column="48" selection-start-line="22" selection-start-column="48" selection-end-line="22" selection-end-column="48" />
+        <state relative-caret-position="84">
+          <caret line="11" column="54" selection-start-line="11" selection-start-column="54" selection-end-line="11" selection-end-column="54" />
           <folding>
             <element signature="docComment;class#AdcolonyPlugin#0" />
             <element signature="docComment;method#registerWith#0;class#AdcolonyPlugin#0" />
