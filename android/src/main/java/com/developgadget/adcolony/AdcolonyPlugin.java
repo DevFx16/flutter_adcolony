@@ -11,43 +11,34 @@ import java.util.ArrayList;
 public class AdcolonyPlugin implements MethodCallHandler {
 
     private final Registrar registrar;
-    private Interstitial AdInterstitial;
 
   /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "AdColony");
+    final MethodChannel channelInter = new MethodChannel(registrar.messenger(), "AdColony/Interstitial");
     channel.setMethodCallHandler(new AdcolonyPlugin(registrar, channel));
-    registrar.platformViewRegistry().registerViewFactory("/BannerAd", new BannerFactory());
+    channelInter.setMethodCallHandler(new Interstitial(registrar, channelInter));
+    registrar.platformViewRegistry().registerViewFactory("/BannerAd", new BannerFactory(registrar.messenger(), registrar.activity()));
   }
 
     private AdcolonyPlugin(Registrar registrar, MethodChannel channel) {
         this.registrar = registrar;
-        this.AdInterstitial = new Interstitial(channel);
-        AdColony.setRewardListener(this.AdInterstitial);
     }
 
     @Override
     public void onMethodCall(MethodCall call, Result result) {
-        switch (call.method) {
-            case "initialize":
-                callInitialize(call, result);
-                break;
-            case "loadInterstitial":
-                this.AdInterstitial.Request((String) call.argument("ZONE_ID"));
-                break;
-            case "showAd":
-                this.AdInterstitial.Show();
-                break;
-            default:
-                result.notImplemented();
-                break;
+        if ("initialize".equals(call.method)) {
+            callInitialize(call, result);
+        } else {
+            result.notImplemented();
         }
-        result.success(Boolean.TRUE);
     }
 
     private void callInitialize(MethodCall call, Result result) {
         String APP_ID = call.argument("APP_ID");
         ArrayList ListZONE = call.argument("ZONE_IDS");
+        final String GDPR = call.argument("GDPR");
+        assert GDPR != null;
         if(ListZONE != null){
             String[] ZONE_IDS = new String[ListZONE.size()];
             for(int i = 0; i < ListZONE.size(); i++){
@@ -57,7 +48,14 @@ public class AdcolonyPlugin implements MethodCallHandler {
                 result.error("NO APP_ID or ZONE_IDS", "a null or empty APP_ID or ZONE_IDS was provided", null);
                 return;
             }
-            AdColony.configure(registrar.activity(), APP_ID, ZONE_IDS);
+            AdColonyAppOptions options = new AdColonyAppOptions(){
+                {
+                    setKeepScreenOn(true);
+                    setGDPRConsentString(GDPR);
+                    setGDPRRequired(true);
+                }
+            };
+            AdColony.configure(registrar.activity(),options, APP_ID, ZONE_IDS);
         }
         result.success(Boolean.TRUE);
     }

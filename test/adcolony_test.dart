@@ -1,4 +1,4 @@
-import 'package:adcolony/adcolony.dart';
+import 'package:adcolony/AdColony.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -16,6 +16,6 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    expect(await Adcolony.showAd(), '42');
+    expect(await AdColony.showAd(), '42');
   });
 }

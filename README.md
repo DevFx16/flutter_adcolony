@@ -11,23 +11,28 @@
 Call `Adcolony.initialize();` during app initialization.
 
 ```dart
-Adcolony.initialize(appid: 'your_app_id', zoneid: ['your_zones_ids']);
+AdColony.initialize(appid: 'your_app_id', zoneid: ['your_zones_ids'], consent: true or flase);
 ```
 
 ### 2. Request Interstitial Ad and Rewarded Video Ad
 
 ```dart
-Adcolony.requestInterstitial(zoneid: 'your_zone_interstitial_id');
+AdColony.requestInterstitial(zoneId: zoneId, listener: (AdColonyEvent event) {});
 ```
-### 3. Show Ad
+### 3. Show Ad in listener
 
 ```dart
-Adcolony.onRequestFilled = () {
-    Adcolony.showAd();
-};
+if (AdColonyEvent.onRequestFilled == event)
+    AdColony.showAd();
 ```
 
-### 4. ProGuard Configuration
+### 4. Show Ad Banner
+
+```dart
+AdColonyBanner('vz09f26f8ad3c340c484', BannerSizes.BANNER, (BannerEvent event) {}),
+```
+
+### 5. ProGuard Configuration
 
 ```
 # For communication with AdColony's WebView
@@ -46,8 +51,6 @@ Adcolony.onRequestFilled = () {
 |--------------------|------------------------------------------------------------------------------------|
 | OnRequestFilled    | Called in response to an ad request when the request has been successfully filled. |
 | OnRequestNotFilled | Called in response to an ad request when the request failed to fill.               |
-| OnOpened           | Called when the interstitial ad opens.                                             |
-| OnExpiring         | Called when an intersitial expires and is no longer valid for playback.            |
 | OnReward           | Called when the rewarded video ends successfully.                                  |
 
 

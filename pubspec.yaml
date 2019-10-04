@@ -1,6 +1,6 @@
 name: adcolony
 description: Adcolony plugin for Flutter apps. you can show interstitial ads and Rewarded video ads.
-version: 0.0.1
+version: 1.0.0
 author: Fernando Araujo <developgadget@gmail.com>
 homepage: https://github.com/DevelopGadget/flutter_adcolony
 
