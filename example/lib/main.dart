@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:adcolony/AdColony.dart';
-import 'package:adcolony/AdColonyBanner.dart';
-import 'package:flutter/rendering.dart';
+import 'dart:async';
+
+import 'package:flutter/services.dart';
+import 'package:adcolony/adcolony.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,24 +12,32 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  String _platformVersion = 'Unknown';
+
   @override
   void initState() {
     super.initState();
-    AdColony.initialize(
-        appId: 'app4f4659d279be4554ad', zoneId: ['vz9a841ab586ae4d72b9', 'vz4eacd40a32ad4fd69c', 'vz09f26f8ad3c340c484'], consent: true);
+    initPlatformState();
   }
 
-  _requestInterstitial(String zoneId) {
-    AdColony.requestInterstitial(
-        zoneId: zoneId,
-        listener: (AdColonyEvent event) {
-          if (AdColonyEvent.onRequestFilled == event)
-            AdColony.showAd();
-          else if (AdColonyEvent.onRequestNotFilled == event)
-            print('Error');
-          else
-            print('Points');
-        });
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> initPlatformState() async {
+    String platformVersion;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      platformVersion = await Adcolony.platformVersion;
+    } on PlatformException {
+      platformVersion = 'Failed to get platform version.';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _platformVersion = platformVersion;
+    });
   }
 
   @override
@@ -36,30 +45,10 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('AdColony Example'),
+          title: const Text('Plugin example app'),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(10.0),
-              child: RaisedButton(
-                onPressed: () => _requestInterstitial('vz9a841ab586ae4d72b9'),
-                child: Text('Show Interstitial'),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(10.0),
-              child: RaisedButton(
-                onPressed: () => _requestInterstitial('vz4eacd40a32ad4fd69c'),
-                child: Text('Show Interstitial rewarded'),
-              ),
-            ),
-            AdColonyBanner('vz09f26f8ad3c340c484', BannerSizes.BANNER, (BannerEvent event) {}),
-            Padding(padding: EdgeInsets.only(top: 10.0)),
-            AdColonyBanner('vz09f26f8ad3c340c484', BannerSizes.MEDIUM_RECTANGLE, (BannerEvent event) {}),
-          ],
+        body: Center(
+          child: Text('Running on: $_platformVersion\n'),
         ),
       ),
     );

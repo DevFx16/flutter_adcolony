@@ -1,58 +1,16 @@
-# Flutter AdColony
+# adcolony_example
 
-**Note: Currently only Android platform is supported.**
-
-**Note: AndroidX is required.**
+Demonstrates how to use the adcolony plugin.
 
 ## Getting Started
 
-### 1. Initialization
+This project is a starting point for a Flutter application.
 
-Call `Adcolony.initialize();` during app initialization.
+A few resources to get you started if this is your first Flutter project:
 
-```dart
-AdColony.initialize(appid: 'your_app_id', zoneid: ['your_zones_ids'], consent: true or flase);
-```
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-### 2. Request Interstitial Ad and Rewarded Video Ad
-
-```dart
-AdColony.requestInterstitial(zoneId: zoneId, listener: (AdColonyEvent event) {});
-```
-### 3. Show Ad in listener
-
-```dart
-if (AdColonyEvent.onRequestFilled == event)
-    AdColony.showAd();
-```
-
-### 4. Show Ad Banner
-
-```dart
-AdColonyBanner('vz09f26f8ad3c340c484', BannerSizes.BANNER, (BannerEvent event) {}),
-```
-
-### 5. ProGuard Configuration
-
-```
-# For communication with AdColony's WebView
--keepclassmembers class * { 
-    @android.webkit.JavascriptInterface <methods>; 
-}
-```
-```
-# For removing warnings due to lack of Multi-Window support
--dontwarn android.app.Activity
-```
-
-## Events
-
-| Event              | Description                                                                        |
-|--------------------|------------------------------------------------------------------------------------|
-| OnRequestFilled    | Called in response to an ad request when the request has been successfully filled. |
-| OnRequestNotFilled | Called in response to an ad request when the request failed to fill.               |
-| OnReward           | Called when the rewarded video ends successfully.                                  |
-
-
-## Future Work
-Implement for iOS platform.
+For help getting started with Flutter, view our
+[online documentation](https://flutter.dev/docs), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.

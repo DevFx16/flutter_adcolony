@@ -1,9 +1,11 @@
-import 'package:adcolony/AdColony.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:adcolony/adcolony.dart';
 
 void main() {
   const MethodChannel channel = MethodChannel('adcolony');
+
+  TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() {
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
@@ -16,6 +18,6 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    expect(await AdColony.showAd(), '42');
+    expect(await Adcolony.platformVersion, '42');
   });
 }
