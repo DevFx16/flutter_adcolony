@@ -5,9 +5,9 @@
 Pod::Spec.new do |s|
   s.name             = 'adcolony'
   s.version          = '0.0.1'
-  s.summary          = 'A new flutter plugin project.'
+  s.summary          = 'Ad Network plugin flutter'
   s.description      = <<-DESC
-A new flutter plugin project.
+Ad Network plugin flutter
                        DESC
   s.homepage         = 'http://example.com'
   s.license          = { :file => '../LICENSE' }
