@@ -8,28 +8,40 @@
 
 ### 1. Initialization
 
-Call `Adcolony.initialize();` during app initialization.
+Call `Adcolony.init();` during app initialization.
 
 ```dart
-AdColony.initialize(appid: 'your_app_id', zoneid: ['your_zones_ids'], consent: true or flase);
+AdColony.init(AdColonyOptions('#your_app_id', '0', this.zones));
 ```
-
+```dart
+class AdColonyOptions {
+	final String id;
+	final String gdpr;
+	final List<String> zones;
+	AdColonyOptions(this.id, this.gdpr, this.zones);
+	Map<String, dynamic> toJson() =>
+	{'Id': this.id, 'Gdpr': this.gdpr, 'Zones': this.zones};
+}
+```
+[For more information GDPR](https://github.com/AdColony/AdColony-Android-SDK/wiki/GDPR)
 ### 2. Request Interstitial Ad and Rewarded Video Ad
 
 ```dart
-AdColony.requestInterstitial(zoneId: zoneId, listener: (AdColonyEvent event) {});
+	AdColony.request('#ad_zone', listener);
 ```
 ### 3. Show Ad in listener
 
 ```dart
-if (AdColonyEvent.onRequestFilled == event)
-    AdColony.showAd();
+listener(AdColonyAdListener event) {
+	if (event == AdColonyAdListener.onRequestFilled)
+		AdColony.show();
+}
 ```
 
 ### 4. Show Ad Banner
 
 ```dart
-AdColonyBanner('vz09f26f8ad3c340c484', BannerSizes.BANNER, (BannerEvent event) {}),
+BannerView((AdColonyAdListener event) =>  print(event), BannerSizes.leaderboard, '#ad_zone'),
 ```
 
 ### 5. ProGuard Configuration
@@ -47,12 +59,19 @@ AdColonyBanner('vz09f26f8ad3c340c484', BannerSizes.BANNER, (BannerEvent event) {
 
 ## Events
 
-| Event              | Description                                                                        |
-|--------------------|------------------------------------------------------------------------------------|
-| OnRequestFilled    | Called in response to an ad request when the request has been successfully filled. |
-| OnRequestNotFilled | Called in response to an ad request when the request failed to fill.               |
-| OnReward           | Called when the rewarded video ends successfully.                                  |
-
+```dart
+enum AdColonyAdListener {
+	onRequestFilled,
+	onRequestNotFilled,
+	onReward,
+	onOpened,
+	onClosed,
+	onIAPEvent,
+	onExpiring,
+	onLeftApplication,
+	onClicked
+}
+```
 
 ## Future Work
 Implement for iOS platform.
