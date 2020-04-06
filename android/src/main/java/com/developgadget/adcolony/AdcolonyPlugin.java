@@ -1,15 +1,20 @@
 package com.developgadget.adcolony;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.adcolony.sdk.AdColony;
 import com.adcolony.sdk.AdColonyAppOptions;
+import com.adcolony.sdk.AdColonyInterstitial;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 
 import io.flutter.Log;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -21,39 +26,51 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
+import io.flutter.plugin.platform.PlatformViewRegistry;
 
+@SuppressWarnings("ConstantConditions")
 public class AdcolonyPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
 
+    @SuppressLint("StaticFieldLeak")
     private static AdcolonyPlugin Instance;
-    private static Interstitial InstanceInterstitial;
     private static MethodChannel Channel;
-    private static Activity ActivityInstance;
+    @SuppressLint("StaticFieldLeak")
+    static Activity ActivityInstance;
+    static AdColonyInterstitial Ad;
+    private static final Listeners listeners = new Listeners();
 
-    public static AdcolonyPlugin getInstance() {
+    static AdcolonyPlugin getInstance() {
         return Instance;
     }
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         this.OnAttachedToEngine(flutterPluginBinding.getBinaryMessenger());
+        this.RegistrarBanner(flutterPluginBinding.getPlatformViewRegistry());
     }
 
     public static void registerWith(Registrar registrar) {
         if (Instance == null) Instance = new AdcolonyPlugin();
         Instance.OnAttachedToEngine(registrar.messenger());
+        Instance.RegistrarBanner(registrar.platformViewRegistry());
+    }
+
+    private void RegistrarBanner(PlatformViewRegistry registry) {
+        registry.registerViewFactory("/Banner", new BannerFactory());
     }
 
     private void OnAttachedToEngine(BinaryMessenger messenger) {
-        if (this.Instance == null) this.Instance = new AdcolonyPlugin();
-        if (this.InstanceInterstitial == null) this.InstanceInterstitial = new Interstitial();
-        if (this.Channel != null) return;
-        this.Channel = new MethodChannel(messenger, "AdColony");
-        this.Channel.setMethodCallHandler(this);
+        if (AdcolonyPlugin.Instance == null)
+            AdcolonyPlugin.Instance = new AdcolonyPlugin();
+        if (AdcolonyPlugin.Channel != null)
+            return;
+        AdcolonyPlugin.Channel = new MethodChannel(messenger, "AdColony");
+        AdcolonyPlugin.Channel.setMethodCallHandler(this);
     }
 
-    public void OnMethodCallHandler(final String method) {
+    void OnMethodCallHandler(final String method) {
         try {
-            this.ActivityInstance.runOnUiThread(new Runnable() {
+            AdcolonyPlugin.ActivityInstance.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     Channel.invokeMethod(method, null);
@@ -64,20 +81,20 @@ public class AdcolonyPlugin implements FlutterPlugin, MethodCallHandler, Activit
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         try {
             switch (call.method) {
                 case "Init":
-                    this.InitSdk((HashMap) call.arguments, result);
+                    this.InitSdk((HashMap) call.arguments);
                     break;
                 case "Request":
-                    if (call.argument("IsInter"))
-                        this.InstanceInterstitial.Request((String) call.argument("Id"));
+                    AdColony.requestInterstitial((String) call.argument("Id"), AdcolonyPlugin.listeners);
                     break;
                 case "Show":
-                    if (call.argument("IsInter"))
-                        this.InstanceInterstitial.Show();
+                    if (AdcolonyPlugin.Ad != null)
+                        AdcolonyPlugin.Ad.show();
                     break;
             }
             result.success(Boolean.TRUE);
@@ -86,17 +103,21 @@ public class AdcolonyPlugin implements FlutterPlugin, MethodCallHandler, Activit
         }
     }
 
-    private void InitSdk(final HashMap args, Result result) {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void InitSdk(final HashMap args) {
         try {
-            if (this.ActivityInstance != null) {
+            if (AdcolonyPlugin.ActivityInstance != null) {
                 AdColonyAppOptions options = new AdColonyAppOptions() {
                     {
                         setKeepScreenOn(true);
-                        setGDPRConsentString((String) args.get("Gdpr"));
+                        setGDPRConsentString((String) Objects.requireNonNull(args.get("Gdpr")));
                         setGDPRRequired(true);
                     }
                 };
-                AdColony.configure(this.ActivityInstance, options, (String) args.get("Id"), (String[]) ((ArrayList) args.get("Zones")).toArray());
+                Object[] arrayList = ((ArrayList) args.get("Zones")).toArray();
+                String[] Zones = Arrays.copyOf(arrayList, arrayList.length, String[].class);
+                AdColony.configure(AdcolonyPlugin.ActivityInstance, options, (String) args.get("Id"), Zones);
+                AdColony.setRewardListener(AdcolonyPlugin.listeners);
             } else {
                 Log.e("AdColony", "Activity Nulll");
             }
@@ -111,7 +132,7 @@ public class AdcolonyPlugin implements FlutterPlugin, MethodCallHandler, Activit
 
     @Override
     public void onAttachedToActivity(ActivityPluginBinding binding) {
-        this.ActivityInstance = binding.getActivity();
+        AdcolonyPlugin.ActivityInstance = binding.getActivity();
     }
 
     @Override
@@ -121,7 +142,7 @@ public class AdcolonyPlugin implements FlutterPlugin, MethodCallHandler, Activit
 
     @Override
     public void onReattachedToActivityForConfigChanges(ActivityPluginBinding binding) {
-        this.ActivityInstance = binding.getActivity();
+        AdcolonyPlugin.ActivityInstance = binding.getActivity();
     }
 
     @Override

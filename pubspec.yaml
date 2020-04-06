@@ -1,8 +1,8 @@
 name: adcolony
 description: Ad Network plugin flutter
-version: 0.0.1
-author:
-homepage:
+version: 2.0.0
+author: Fernando Araujo <developgadget@gmail.com>
+homepage: https://github.com/DevelopGadget/flutter_adcolony
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
