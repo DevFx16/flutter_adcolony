@@ -1,60 +1,16 @@
-```dart
-import 'package:flutter/material.dart';
-import 'package:adcolony/adcolony.dart';
-import 'package:adcolony/banner.dart';
+# adcolony_example
 
-void main() => runApp(MyApp());
+Demonstrates how to use the adcolony plugin.
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
+## Getting Started
 
-class _MyAppState extends State<MyApp> {
-  final zones = [
-    'vz943c1ab8c71b46c5a5',
-    'vz943c1ab8c71b46c5a5',
-    'vza5b6bdf6080b4a8682'
-  ];
-  @override
-  void initState() {
-    super.initState();
-    AdColony.init(AdColonyOptions('app4f4659d279be4554ad', '0', this.zones));
-  }
+This project is a starting point for a Flutter application.
 
-  listener(AdColonyAdListener event) {
-    print(event);
-    if (event == AdColonyAdListener.onRequestFilled)
-      AdColony.show();
-  }
+A few resources to get you started if this is your first Flutter project:
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: ListView(
-            children: <Widget>[
-              RaisedButton(
-                onPressed: () => AdColony.request(this.zones[1], listener),
-                child: Text('Show Interstitial'),
-              ),
-              RaisedButton(
-                onPressed: () => AdColony.request(this.zones[0], listener),
-                child: Text('Show Interstitial Rewarded'),
-              ),
-              BannerView((AdColonyAdListener event) => print(event), BannerSizes.banner, this.zones[2]),
-              BannerView((AdColonyAdListener event) => print(event), BannerSizes.medium, this.zones[2]),
-              BannerView((AdColonyAdListener event) => print(event), BannerSizes.skyscraper, this.zones[2]),
-              BannerView((AdColonyAdListener event) => print(event), BannerSizes.leaderboard, this.zones[2]),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-```
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+
+For help getting started with Flutter, view our
+[online documentation](https://flutter.dev/docs), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.

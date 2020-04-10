@@ -1,6 +1,6 @@
 name: adcolony
-description: Ad Network plugin flutter AdColony Rewarded Interstitial and Banners ads show
-version: 2.0.0
+description: Ad Network plugin for banners, rewards and interstitial ads show
+version: 2.0.2
 homepage: https://github.com/DevelopGadget/flutter_adcolony
 
 environment:

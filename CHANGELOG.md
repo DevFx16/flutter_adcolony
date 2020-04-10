@@ -11,3 +11,7 @@
 
 * Upgrade SDK AdColony
 * Migrate Plugin
+
+## 2.0.2
+
+* Error Plugin Method Channel

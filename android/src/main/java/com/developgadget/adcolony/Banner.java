@@ -57,8 +57,6 @@ public class Banner extends AdColonyAdViewListener implements PlatformView {
 
     @Override
     public void onRequestFilled(AdColonyAdView adColonyAdView) {
-        this.layout.setLayoutParams(adColonyAdView.getLayoutParams());
-        this.layout.addView(adColonyAdView);
         this.Ad = adColonyAdView;
     }
 
