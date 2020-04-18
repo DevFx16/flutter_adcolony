@@ -50,6 +50,7 @@ public class AdcolonyPlugin implements FlutterPlugin, MethodCallHandler, Activit
     }
 
     public static void registerWith(Registrar registrar) {
+        if(ActivityInstance == null) ActivityInstance = registrar.activity();
         if (Instance == null) Instance = new AdcolonyPlugin();
         Instance.OnAttachedToEngine(registrar.messenger());
         Instance.RegistrarBanner(registrar.platformViewRegistry());

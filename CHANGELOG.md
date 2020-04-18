@@ -15,3 +15,7 @@
 ## 2.0.2
 
 * Error Plugin Method Channel
+
+## 2.0.3
+
+* Activity Null
