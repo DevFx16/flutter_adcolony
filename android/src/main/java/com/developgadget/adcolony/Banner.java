@@ -17,25 +17,23 @@ import io.flutter.plugin.platform.PlatformView;
 @SuppressWarnings("SuspiciousMethodCalls")
 public class Banner extends AdColonyAdViewListener implements PlatformView {
 
-    private FrameLayout layout;
-    private AdColonyAdView Ad;
+    private LinearLayout layout;
+    private final HashMap<String, AdColonyAdSize> sizes = new HashMap<String, AdColonyAdSize>() {
+        {
+            put("BANNER", AdColonyAdSize.BANNER);
+            put("LEADERBOARD", AdColonyAdSize.LEADERBOARD);
+            put("MEDIUM_RECTANGLE", AdColonyAdSize.MEDIUM_RECTANGLE);
+            put("SKYSCRAPER", AdColonyAdSize.SKYSCRAPER);
+        }
+    };
 
     Banner(HashMap args) {
         try {
             String id = (String) args.get("Id");
-            HashMap<String, AdColonyAdSize> sizes = new HashMap<String, AdColonyAdSize>() {
-                {
-                    put("BANNER", AdColonyAdSize.BANNER);
-                    put("LEADERBOARD", AdColonyAdSize.LEADERBOARD);
-                    put("MEDIUM_RECTANGLE", AdColonyAdSize.MEDIUM_RECTANGLE);
-                    put("SKYSCRAPER", AdColonyAdSize.SKYSCRAPER);
-                }
-            };
-            AdColonyAdSize size = sizes.get(args.get("Size"));
-            this.layout = new FrameLayout(AdcolonyPlugin.ActivityInstance);
-            this.layout.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
+            AdColonyAdSize size = this.sizes.get(args.get("Size"));
             assert id != null;
             assert size != null;
+            this.layout = new LinearLayout(AdcolonyPlugin.ActivityInstance);
             AdColony.requestAdView(id, this, size);
         } catch (Exception e) {
             Log.e("AdColony", e.toString());
@@ -44,26 +42,22 @@ public class Banner extends AdColonyAdViewListener implements PlatformView {
 
     @Override
     public View getView() {
-        if(this.Ad == null)
             return this.layout;
-        else
-            return this.Ad;
     }
 
     @Override
     public void dispose() {
-
+        this.layout.removeAllViews();
     }
 
     @Override
     public void onRequestFilled(AdColonyAdView adColonyAdView) {
-        this.Ad = adColonyAdView;
+        this.layout.addView(adColonyAdView, adColonyAdView.getLayoutParams());
     }
 
     public void onRequestNotFilled(AdColonyZone adColonyInterstitial) {
         try {
             AdcolonyPlugin.getInstance().OnMethodCallHandler("onRequestNotFilled");
-            //AdColony.requestAdView(this.Id, this, this.Size);
             Log.e("AdColony", "onRequestNotFilled");
         } catch (Exception e) {
             Log.e("AdColony", e.toString());

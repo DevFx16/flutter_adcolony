@@ -19,3 +19,7 @@
 ## 2.0.3
 
 * Activity Null
+
+## 2.0.4
+
+* Banner View

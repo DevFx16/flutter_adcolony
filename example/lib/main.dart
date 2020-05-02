@@ -11,9 +11,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final zones = [
-    'vz943c1ab8c71b46c5a5',
-    'vz943c1ab8c71b46c5a5',
-    'vza5b6bdf6080b4a8682'
+    'vz9a841ab586ae4d72b9',
+    'vz4eacd40a32ad4fd69c',
+    'vz09f26f8ad3c340c484'
   ];
   @override
   void initState() {
