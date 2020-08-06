@@ -11,9 +11,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final zones = [
-    'vz9a841ab586ae4d72b9',
-    'vz4eacd40a32ad4fd69c',
-    'vz09f26f8ad3c340c484'
+    'vz4cc427f259db484398',
+    'vz943c1ab8c71b46c5a5',
+    'vza5b6bdf6080b4a8682'
   ];
   @override
   void initState() {
@@ -23,8 +23,7 @@ class _MyAppState extends State<MyApp> {
 
   listener(AdColonyAdListener event) {
     print(event);
-    if (event == AdColonyAdListener.onRequestFilled)
-      AdColony.show();
+    if (event == AdColonyAdListener.onRequestFilled) AdColony.show();
   }
 
   @override
@@ -45,10 +44,14 @@ class _MyAppState extends State<MyApp> {
                 onPressed: () => AdColony.request(this.zones[0], listener),
                 child: Text('Show Interstitial Rewarded'),
               ),
-              BannerView((AdColonyAdListener event) => print(event), BannerSizes.banner, this.zones[2]),
-              BannerView((AdColonyAdListener event) => print(event), BannerSizes.medium, this.zones[2]),
-              BannerView((AdColonyAdListener event) => print(event), BannerSizes.skyscraper, this.zones[2]),
-              BannerView((AdColonyAdListener event) => print(event), BannerSizes.leaderboard, this.zones[2]),
+              BannerView((AdColonyAdListener event) => print(event),
+                  BannerSizes.banner, this.zones[2]),
+              BannerView((AdColonyAdListener event) => print(event),
+                  BannerSizes.medium, this.zones[2]),
+              BannerView((AdColonyAdListener event) => print(event),
+                  BannerSizes.skyscraper, this.zones[2]),
+              BannerView((AdColonyAdListener event) => print(event),
+                  BannerSizes.leaderboard, this.zones[2]),
             ],
           ),
         ),

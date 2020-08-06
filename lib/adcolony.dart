@@ -22,7 +22,6 @@ class AdColony {
     'onRequestFilled': AdColonyAdListener.onRequestFilled,
     'onRequestNotFilled': AdColonyAdListener.onRequestNotFilled,
     'onReward': AdColonyAdListener.onReward,
-    'onReward': AdColonyAdListener.onReward,
     'onOpened': AdColonyAdListener.onOpened,
     'onClosed': AdColonyAdListener.onClosed,
     'onIAPEvent': AdColonyAdListener.onIAPEvent,

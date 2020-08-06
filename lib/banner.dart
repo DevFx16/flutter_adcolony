@@ -20,19 +20,20 @@ class BannerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: this.sizes[this.size].width,
-      height: this.sizes[this.size].height,
-      child: AndroidView(
-        viewType: '/Banner',
-        key: UniqueKey(),
-        creationParams: {'Size': this.sizes[this.size].type, 'Id': this.id},
-        creationParamsCodec: StandardMessageCodec(),
-        onPlatformViewCreated: (int i) {
-          AdColony.channel.setMethodCallHandler(
-              (MethodCall call) async => AdColony.handleMethod(call, listener));
-        },
-      ),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        AndroidView(
+          viewType: '/Banner',
+          key: UniqueKey(),
+          creationParams: {'Size': this.sizes[this.size].type, 'Id': this.id},
+          creationParamsCodec: StandardMessageCodec(),
+          onPlatformViewCreated: (int i) {
+            AdColony.channel.setMethodCallHandler((MethodCall call) async =>
+                AdColony.handleMethod(call, listener));
+          },
+        ),
+      ],
     );
   }
 }
