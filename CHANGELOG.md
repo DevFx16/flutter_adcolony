@@ -23,3 +23,7 @@
 ## 2.0.4
 
 * Banner View
+
+## 2.0.5
+
+* Upgrade SDK
