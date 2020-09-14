@@ -3,6 +3,7 @@ package com.developgadget.adcolony;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Build;
+import android.os.Messenger;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -46,18 +47,18 @@ public class AdcolonyPlugin implements FlutterPlugin, MethodCallHandler, Activit
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         this.OnAttachedToEngine(flutterPluginBinding.getBinaryMessenger());
-        this.RegistrarBanner(flutterPluginBinding.getPlatformViewRegistry());
+        this.RegistrarBanner(flutterPluginBinding.getPlatformViewRegistry(), flutterPluginBinding.getBinaryMessenger());
     }
 
     public static void registerWith(Registrar registrar) {
-        if(ActivityInstance == null) ActivityInstance = registrar.activity();
+        if (ActivityInstance == null) ActivityInstance = registrar.activity();
         if (Instance == null) Instance = new AdcolonyPlugin();
         Instance.OnAttachedToEngine(registrar.messenger());
-        Instance.RegistrarBanner(registrar.platformViewRegistry());
+        Instance.RegistrarBanner(registrar.platformViewRegistry(), registrar.messenger());
     }
 
-    private void RegistrarBanner(PlatformViewRegistry registry) {
-        registry.registerViewFactory("/Banner", new BannerFactory());
+    private void RegistrarBanner(PlatformViewRegistry registry, BinaryMessenger messenger) {
+        registry.registerViewFactory("/Banner", new BannerFactory(messenger));
     }
 
     private void OnAttachedToEngine(BinaryMessenger messenger) {
@@ -111,8 +112,8 @@ public class AdcolonyPlugin implements FlutterPlugin, MethodCallHandler, Activit
                 AdColonyAppOptions options = new AdColonyAppOptions() {
                     {
                         setKeepScreenOn(true);
-                        setGDPRConsentString((String) Objects.requireNonNull(args.get("Gdpr")));
-                        setGDPRRequired(true);
+                        setPrivacyFrameworkRequired(AdColonyAppOptions.GDPR, true);
+                        setPrivacyConsentString(AdColonyAppOptions.GDPR, Objects.requireNonNull(args.get("Gdpr")).toString());
                     }
                 };
                 Object[] arrayList = ((ArrayList) args.get("Zones")).toArray();
@@ -120,7 +121,7 @@ public class AdcolonyPlugin implements FlutterPlugin, MethodCallHandler, Activit
                 AdColony.configure(AdcolonyPlugin.ActivityInstance, options, (String) args.get("Id"), Zones);
                 AdColony.setRewardListener(AdcolonyPlugin.listeners);
             } else {
-                Log.e("AdColony", "Activity Nulll");
+                Log.e("AdColony", "Activity Null");
             }
         } catch (Exception e) {
             Log.e("AdColony", e.getMessage());

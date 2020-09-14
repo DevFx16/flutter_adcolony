@@ -1,7 +1,11 @@
 package com.developgadget.adcolony;
+
+import android.content.Context;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
 
 import com.adcolony.sdk.AdColony;
 import com.adcolony.sdk.AdColonyAdSize;
@@ -12,12 +16,18 @@ import com.adcolony.sdk.AdColonyZone;
 import java.util.HashMap;
 
 import io.flutter.Log;
+import io.flutter.plugin.common.BinaryMessenger;
+import io.flutter.plugin.common.MethodCall;
+import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.platform.PlatformView;
 
 @SuppressWarnings("SuspiciousMethodCalls")
-public class Banner extends AdColonyAdViewListener implements PlatformView {
+public class Banner extends AdColonyAdViewListener implements PlatformView, MethodChannel.MethodCallHandler {
 
-    private LinearLayout layout;
+    private FrameLayout layout;
+    private String idString;
+    private AdColonyAdSize size;
+    private MethodChannel channel;
     private final HashMap<String, AdColonyAdSize> sizes = new HashMap<String, AdColonyAdSize>() {
         {
             put("BANNER", AdColonyAdSize.BANNER);
@@ -27,14 +37,15 @@ public class Banner extends AdColonyAdViewListener implements PlatformView {
         }
     };
 
-    Banner(HashMap args) {
+    Banner(Context context, BinaryMessenger messenger, int id, HashMap args) {
         try {
-            String id = (String) args.get("Id");
-            AdColonyAdSize size = this.sizes.get(args.get("Size"));
-            assert id != null;
-            assert size != null;
-            this.layout = new LinearLayout(AdcolonyPlugin.ActivityInstance);
-            AdColony.requestAdView(id, this, size);
+            this.idString = (String) args.get("Id");
+            this.size = this.sizes.get(args.get("Size"));
+            assert this.idString != null;
+            assert this.size != null;
+            this.layout = new FrameLayout(AdcolonyPlugin.ActivityInstance);
+            this.channel = new MethodChannel(messenger, "Banner" + "_" + id);
+            this.channel.setMethodCallHandler(this);
         } catch (Exception e) {
             Log.e("AdColony", e.toString());
         }
@@ -42,7 +53,7 @@ public class Banner extends AdColonyAdViewListener implements PlatformView {
 
     @Override
     public View getView() {
-            return this.layout;
+        return this.layout;
     }
 
     @Override
@@ -50,17 +61,47 @@ public class Banner extends AdColonyAdViewListener implements PlatformView {
         this.layout.removeAllViews();
     }
 
+    public void updateView(AdColonyAdView view) {
+        this.layout.removeAllViews();
+        this.layout.addView(view);
+    }
+
     @Override
     public void onRequestFilled(AdColonyAdView adColonyAdView) {
-        this.layout.addView(adColonyAdView, adColonyAdView.getLayoutParams());
+        this.updateView(adColonyAdView);
     }
 
     public void onRequestNotFilled(AdColonyZone adColonyInterstitial) {
         try {
-            AdcolonyPlugin.getInstance().OnMethodCallHandler("onRequestNotFilled");
+            this.OnMethodCallHandler("onRequestNotFilled");
             Log.e("AdColony", "onRequestNotFilled");
+            this.layout.removeAllViews();
         } catch (Exception e) {
             Log.e("AdColony", e.toString());
+        }
+    }
+
+    @Override
+    public void onMethodCall(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        switch (call.method) {
+            case "loadAd":
+                AdColony.requestAdView(this.idString, this, this.size);
+                break;
+            default:
+                result.notImplemented();
+        }
+    }
+
+    void OnMethodCallHandler(final String method) {
+        try {
+            AdcolonyPlugin.ActivityInstance.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Banner.this.channel.invokeMethod(method, null);
+                }
+            });
+        } catch (Exception e) {
+            Log.e("AdColony", "Error " + e.toString());
         }
     }
 }
