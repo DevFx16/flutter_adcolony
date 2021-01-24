@@ -32,3 +32,7 @@
 
 * Upgrade SDK
 * Fix Banner View Little
+
+## 2.0.7
+
+* Upgrade SDK
